@@ -1,0 +1,22 @@
+{
+    "name": "spring-resource-handling",
+    "version": "0.0.1",
+    "dependencies": {
+        "curl": "0.8.10",
+        "bootstrap": "3.1.1",
+        "jquery": "2.0.3"
+    },
+    "devDependencies": {
+    },
+    "overrides": {
+        "jquery": {
+            "ignore": ["build/**", "speed/**", "src/**", "test/**"]
+        },
+        "bootstrap": {
+            "ignore": [
+                "fonts/**", "grunt/**", "js/**",
+                "less/**", "test-infa/**"
+            ]
+        }
+    }
+}
