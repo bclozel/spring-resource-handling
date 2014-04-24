@@ -89,7 +89,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public List<ResourceResolver> jsResourceResolvers() {
 
 		List<ResourceResolver> resolvers = new ArrayList<ResourceResolver>();
-		resolvers.add(new NewPrefixResourceResolver("/prefix"));
+		resolvers.add(new PrefixResourceResolver("/prefix"));
 		resolvers.add(new PathResourceResolver());
 		return resolvers;
 	}
