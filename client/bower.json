@@ -3,8 +3,8 @@
     "version": "0.0.1",
     "dependencies": {
         "curl": "0.8.10",
-        "bootstrap": "3.1.1",
-        "jquery": "2.0.3"
+        "jquery": "2.0.3",
+        "bootstrap": "3.1.1"
     },
     "devDependencies": {
     },
@@ -13,10 +13,7 @@
             "ignore": ["build/**", "speed/**", "src/**", "test/**"]
         },
         "bootstrap": {
-            "ignore": [
-                "fonts/**", "grunt/**", "js/**",
-                "less/**", "test-infa/**"
-            ]
+            "ignore": ["fonts/**", "grunt/**", "js/**", "less/**", "test-infa/**"]
         }
     }
 }

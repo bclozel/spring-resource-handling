@@ -1,8 +1,9 @@
+
 var gulpFilter = require('gulp-filter'),
     cram = require('gulp-cram'),
     uglify = require('gulp-uglify'),
     bowerSrc = require('gulp-bower-src'),
-    cssmin = require('gulp-minify-css'),
+    cssMinify = require('gulp-minify-css'),
     gulp = require('gulp');
 
 var paths = {
@@ -11,38 +12,38 @@ var paths = {
         files: ['src/css/*.css'],
         root: 'src/css'
     },
-    dest: './dist/'
+    destination: './dist'
 };
 
+// Optimize application CSS files and copy to "dist" folder
+gulp.task('optimize-and-copy-css', function() {
 
-// concat and minify CSS files
-gulp.task('minify-css', function() {
     return gulp.src(paths.css.files)
-        .pipe(cssmin({root:paths.css.root}))
-        .pipe(gulp.dest(paths.dest+'css'));
+        .pipe(cssMinify({root : paths.css.root}))
+        .pipe(gulp.dest(paths.destination + '/css'));
 });
 
-// cram and uglify JavaScript source files
-gulp.task('build-modules', function() {
+// Optimize application JavaScript files and copy to "dist" folder
+gulp.task('optimize-and-copy-js', function() {
 
-    var opts = {
-        includes: [ 'curl/loader/legacy'],
+    var options = {
+        includes: ['curl/loader/legacy'],
         appRoot: "./src"
     };
-
-    return cram(paths.run, opts).into('run.js')
+    return cram(paths.run, options).into('run.js')
         .pipe(uglify())
-        .pipe(gulp.dest(paths.dest));
+        .pipe(gulp.dest(paths.destination));
 });
 
-// copy main bower files (see bower.json) and optimize js
-gulp.task('bower-files', function() {
+// Optimize bower-managed JavaScript dependencies and copy to "dist" folder
+gulp.task('optimize-and-copy-lib', function() {
+
     var filter = gulpFilter(["**/*.js", "!**/*.min.js"]);
     return bowerSrc()
         .pipe(filter)
         .pipe(uglify())
         .pipe(filter.restore())
-        .pipe(gulp.dest(paths.dest+'lib'));
+        .pipe(gulp.dest(paths.destination + '/lib'));
 })
 
-gulp.task('build', ['minify-css', 'build-modules', 'bower-files'], function(){ });
+gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib'], function(){});
