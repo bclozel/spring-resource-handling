@@ -2,17 +2,9 @@
 
 var baseUrl;
 (function () {
-    var cjsConfig = {
-        loader: 'curl/loader/cjsm11'
-    };
-
     curl.config({
         baseUrl: baseUrl || '',
         packages: {
-            hello: { name: 'hello',
-                location: 'js',
-                main: 'hello.js',
-                config: cjsConfig },
             curl: { location: 'lib/curl/src/curl/' }
         },
         paths: {
@@ -20,7 +12,7 @@ var baseUrl;
         }
     });
 
-    curl(['hello', 'jquery']).then(start, fail);
+    curl(['app/hello', 'jquery']).then(start, fail);
 
     function start(hello, $) {
         $(function(){

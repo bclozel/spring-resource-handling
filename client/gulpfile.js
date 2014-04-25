@@ -6,7 +6,7 @@ var gulpFilter = require('gulp-filter'),
     gulp = require('gulp');
 
 var paths = {
-    run: 'src/js/run.js',
+    run: 'src/run.js',
     css: {
         files: ['src/css/*.css'],
         root: 'src/css'
@@ -26,7 +26,7 @@ gulp.task('minify-css', function() {
 gulp.task('build-modules', function() {
 
     var opts = {
-        includes: [ 'curl/loader/legacy', 'curl/loader/cjsm11'],
+        includes: [ 'curl/loader/legacy'],
         appRoot: "./src"
     };
 
