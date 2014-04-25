@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableAutoConfiguration(exclude = {WebMvcAutoConfiguration.class})
-@EnableWebMvc
 @ComponentScan
 public class Application extends SpringBootServletInitializer {
 
