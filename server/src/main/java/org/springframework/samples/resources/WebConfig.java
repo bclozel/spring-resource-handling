@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.samples.resources.helpers.ResourceUrlHelper;
+import org.springframework.samples.resources.handlebars.ResourceUrlHelper;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -36,12 +36,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public HandlebarsViewResolver viewResolver(PublicResourceUrlProvider translator) {
-		HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
-		viewResolver.setPrefix("classpath:/handlebars/");
-		viewResolver.registerHelper("src", new ResourceUrlHelper(translator));
-		viewResolver.setCache(!isDevProfileActive());
-		return viewResolver;
+	public HandlebarsViewResolver viewResolver(PublicResourceUrlProvider resourceUrlProvider) {
+		HandlebarsViewResolver resolver = new HandlebarsViewResolver();
+		resolver.setPrefix("classpath:/handlebars/");
+		resolver.registerHelper("src", new ResourceUrlHelper(resourceUrlProvider));
+		resolver.setCache(!isDevProfileActive());
+		return resolver;
 	}
 
 	@Override
@@ -59,6 +59,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 			location = "classpath:static/";
 			cachePeriod = null;
 		}
+
 		registry.addResourceHandler("/**/*.css")
 				.addResourceLocations(location)
 				.setCachePeriod(cachePeriod)
@@ -68,11 +69,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 				.addResourceLocations(location)
 				.setCachePeriod(cachePeriod)
 				.setResourceResolvers(new PrefixResourceResolver("/prefix"), new PathResourceResolver());
-
-		registry.addResourceHandler("/**")
-				.addResourceLocations(location)
-				.setCachePeriod(cachePeriod)
-				.setResourceResolvers(new PathResourceResolver());
 	}
 
 }

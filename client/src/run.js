@@ -4,19 +4,16 @@ var baseUrl;
 (function () {
     curl.config({
         baseUrl: baseUrl || '',
-        packages: {
-            curl: { location: 'lib/curl/src/curl/' }
-        },
         paths: {
             jquery: 'lib/jquery/jquery.min'
         }
     });
 
-    curl(['app/hello', 'jquery']).then(start, fail);
+    curl(['jquery', 'app/ui']).then(start, fail);
 
-    function start(hello, $) {
+    function start($, ui) {
         $(function(){
-            hello.greet();
+            ui.update();
         });
     }
 
