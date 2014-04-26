@@ -3,6 +3,8 @@ package org.springframework.samples.resources;
 import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -26,8 +28,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	private String projectRoot;
 
 
-	private boolean isDevProfileActive() {
-		return this.env.acceptsProfiles("development");
+	private String getProjectRootRequired() {
+		Assert.state(this.projectRoot != null, "Please set \"resources.projectRoot\" in application.yml");
+		return this.projectRoot;
 	}
 
 	@Override
@@ -36,39 +39,54 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public HandlebarsViewResolver viewResolver(PublicResourceUrlProvider resourceUrlProvider) {
+	public HandlebarsViewResolver viewResolver(ResourceUrlProvider urlProvider) {
 		HandlebarsViewResolver resolver = new HandlebarsViewResolver();
 		resolver.setPrefix("classpath:/handlebars/");
-		resolver.registerHelper("src", new ResourceUrlHelper(resourceUrlProvider));
-		resolver.setCache(!isDevProfileActive());
+		resolver.registerHelper("src", new ResourceUrlHelper(urlProvider));
+		resolver.setCache(!this.env.acceptsProfiles("development"));
 		return resolver;
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-		String location;
-		Integer cachePeriod;
+		CachingResourceResolver cachingResolver = new CachingResourceResolver(resourceResolverCache());
+		FingerprintResourceResolver fingerprintResolver = new FingerprintResourceResolver();
+		PrefixResourceResolver prefixResolver = new PrefixResourceResolver("/prefix");
+		PathResourceResolver pathResolver = new PathResourceResolver();
 
-		if (isDevProfileActive()) {
-			Assert.state(this.projectRoot != null, "Please set \"resources.projectRoot\" in application.yml");
-			location = "file:///" + this.projectRoot + "/client/src/";
-			cachePeriod = 0;
+		if (this.env.acceptsProfiles("development")) {
+
+			String location = "file:///" + getProjectRootRequired() + "/client/src/";
+			int cachePeriod = 0;
+
+			registry.addResourceHandler("/**/*.css")
+					.addResourceLocations(location)
+					.setCachePeriod(cachePeriod)
+					.setResourceResolvers(fingerprintResolver, pathResolver);
+
+			registry.addResourceHandler("/**/*.js")
+					.addResourceLocations(location)
+					.setCachePeriod(cachePeriod)
+					.setResourceResolvers(prefixResolver, pathResolver);
 		}
 		else {
-			location = "classpath:static/";
-			cachePeriod = null;
+
+			String location = "classpath:static/";
+
+			registry.addResourceHandler("/**/*.css")
+					.addResourceLocations(location)
+					.setResourceResolvers(cachingResolver, fingerprintResolver, pathResolver);
+
+			registry.addResourceHandler("/**/*.js")
+					.addResourceLocations(location)
+					.setResourceResolvers(cachingResolver, prefixResolver, pathResolver);
 		}
+	}
 
-		registry.addResourceHandler("/**/*.css")
-				.addResourceLocations(location)
-				.setCachePeriod(cachePeriod)
-				.setResourceResolvers(new FingerprintResourceResolver(), new PathResourceResolver());
-
-		registry.addResourceHandler("/**/*.js")
-				.addResourceLocations(location)
-				.setCachePeriod(cachePeriod)
-				.setResourceResolvers(new PrefixResourceResolver("/prefix"), new PathResourceResolver());
+	@Bean
+	public Cache resourceResolverCache() {
+		return new ConcurrentMapCache("resource-resolver-cache", false);
 	}
 
 }
