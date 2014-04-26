@@ -2,14 +2,14 @@ package org.springframework.samples.resources.handlebars;
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
-import org.springframework.web.servlet.resource.PublicResourceUrlProvider;
+import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
 import java.io.IOException;
 
 /**
  * A Handlebars Helper to help with rendering resource URLs in Mustache templates
  * through Spring's
- * {@link org.springframework.web.servlet.resource.PublicResourceUrlProvider}.
+ * {@link org.springframework.web.servlet.resource.ResourceUrlProvider}.
  *
  * <p>Registered in {@link org.springframework.samples.resources.WebConfig} with
  * the name "src" so that the following template syntax will trigger its use:
@@ -19,10 +19,10 @@ import java.io.IOException;
  */
 public class ResourceUrlHelper implements Helper<String> {
 
-	private final PublicResourceUrlProvider resourceUrlProvider;
+	private final ResourceUrlProvider resourceUrlProvider;
 
 
-	public ResourceUrlHelper(PublicResourceUrlProvider resourceUrlProvider) {
+	public ResourceUrlHelper(ResourceUrlProvider resourceUrlProvider) {
 		this.resourceUrlProvider = resourceUrlProvider;
 	}
 
