@@ -82,15 +82,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		PrefixResourceResolver prefixResolver = new PrefixResourceResolver("/prefix");
 		PathResourceResolver pathResolver = new PathResourceResolver();
 
+		CachingResourceTransformer cachingTransformer = new CachingResourceTransformer(resourceResolverCache());
+		CssLinkResourceTransformer cssLinkTransformer = new CssLinkResourceTransformer();
+
 		if (this.env.acceptsProfiles("development")) {
 
 			String location = "file:///" + getProjectRootRequired() + "/client/src/";
 			int cachePeriod = 0;
 
-			registry.addResourceHandler("/**/*.css")
+			registry.addResourceHandler("/**/*.css", "/**/*.png")
 					.addResourceLocations(location)
 					.setCachePeriod(cachePeriod)
-					.setResourceResolvers(fingerprintResolver, pathResolver);
+					.setResourceResolvers(fingerprintResolver, pathResolver)
+					.setResourceTransformers(cssLinkTransformer);
 
 			registry.addResourceHandler("/**/*.js")
 					.addResourceLocations(location)
@@ -101,9 +105,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 			String location = "classpath:static/";
 
-			registry.addResourceHandler("/**/*.css")
+			registry.addResourceHandler("/**/*.css", "/**/*.png")
 					.addResourceLocations(location)
-					.setResourceResolvers(cachingResolver, fingerprintResolver, pathResolver);
+					.setResourceResolvers(cachingResolver, fingerprintResolver, pathResolver)
+					.setResourceTransformers(cachingTransformer, cssLinkTransformer);
 
 			registry.addResourceHandler("/**/*.js")
 					.addResourceLocations(location)

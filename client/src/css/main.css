@@ -1,1 +1,9 @@
 @import url("../lib/bootstrap/dist/css/bootstrap.css");
+@import url("https://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700");
+
+#logo {
+    width: 100%;
+    height: 200px;
+    background: url('../img/spring-logo.png') no-repeat 50% 50%;
+    background-size: 450px;
+}
