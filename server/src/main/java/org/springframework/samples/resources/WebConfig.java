@@ -1,6 +1,7 @@
 package org.springframework.samples.resources;
 
 import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -8,8 +9,7 @@ import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.samples.resources.groovy.support.GroovyTemplateConfigurer;
-import org.springframework.samples.resources.groovy.support.GroovyViewResolver;
+import org.springframework.samples.resources.groovy.GroovyHelperViewResolver;
 import org.springframework.samples.resources.handlebars.ResourceUrlHelper;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.*;
+import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 
 
 @EnableWebMvc
@@ -51,26 +52,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public GroovyViewResolver groovyViewResolver() {
-		GroovyViewResolver resolver = new GroovyViewResolver();
-		resolver.setPrefix("classpath:/groovy/");
-		// handlebars viewresolver does not make use of "checkResource"
+	public GroovyHelperViewResolver groovyViewResolver(ResourceUrlProvider urlProvider) {
+		GroovyHelperViewResolver resolver = new GroovyHelperViewResolver();
+		resolver.setSuffix(".tpl");
 		resolver.setOrder(1);
+		resolver.addTemplateHelper("css",
+				s -> String.format("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">",
+					urlProvider.getForLookupPath((String)s)));
 		return resolver;
 	}
 
 	@Bean
-	public GroovyTemplateConfigurer groovyTemplateConfigurer(ResourceUrlProvider urlProvider) {
+	public GroovyMarkupConfigurer groovyTemplateConfigurer() {
 
-		GroovyTemplateConfigurer configurer = new GroovyTemplateConfigurer();
-		// enable fragments support in templates
-		//configurer.setTemplateClass(FragmentTemplate.class);
-
-		// add helper
-		configurer.addTemplateHelper("css",
-			s -> String.format("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">",
-					urlProvider.getForLookupPath((String)s))
-		);
+		GroovyMarkupConfigurer configurer = new GroovyMarkupConfigurer();
+		configurer.setResourceLoaderPath("classpath:groovy/");
+		configurer.setAutoIndent(true);
+		configurer.setAutoNewLine(true);
 		return configurer;
 	}
 

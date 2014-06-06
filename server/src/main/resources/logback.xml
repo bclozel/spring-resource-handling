@@ -12,5 +12,6 @@
     </root>
 
     <logger name="org.springframework.web.servlet.resource" level="TRACE"/>
+	<logger name="org.springframework.web.servlet.view" level="TRACE"/>
 
 </configuration>
