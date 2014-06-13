@@ -30,6 +30,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("${resources.projectRoot:}")
 	private String projectRoot;
 
+    @Value("${app.version:}")
+    private String appVersion;
+
 
 	private String getProjectRootRequired() {
 		Assert.state(this.projectRoot != null, "Please set \"resources.projectRoot\" in application.yml");
@@ -77,7 +80,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		CachingResourceResolver cachingResolver = new CachingResourceResolver(resourceResolverCache());
 		FingerprintResourceResolver fingerprintResolver = new FingerprintResourceResolver();
-		PrefixResourceResolver prefixResolver = new PrefixResourceResolver("/prefix");
 		PathResourceResolver pathResolver = new PathResourceResolver();
 
 		CachingResourceTransformer cachingTransformer = new CachingResourceTransformer(resourceResolverCache());
@@ -85,32 +87,25 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		if (this.env.acceptsProfiles("development")) {
 
+            VersionResourceResolver versionResolver = new VersionResourceResolver(this.appVersion);
 			String location = "file:///" + getProjectRootRequired() + "/client/src/";
 			int cachePeriod = 0;
 
-			registry.addResourceHandler("/**/*.css", "/**/*.png")
+			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
 					.setCachePeriod(cachePeriod)
-					.setResourceResolvers(fingerprintResolver, pathResolver)
+					.setResourceResolvers(versionResolver, fingerprintResolver, pathResolver)
 					.setResourceTransformers(cssLinkTransformer);
-
-			registry.addResourceHandler("/**/*.js")
-					.addResourceLocations(location)
-					.setCachePeriod(cachePeriod)
-					.setResourceResolvers(prefixResolver, pathResolver);
 		}
 		else {
 
+            VersionResourceResolver versionResolver = new VersionResourceResolver("dev");
 			String location = "classpath:static/";
 
-			registry.addResourceHandler("/**/*.css", "/**/*.png")
+			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
-					.setResourceResolvers(cachingResolver, fingerprintResolver, pathResolver)
+					.setResourceResolvers(cachingResolver, versionResolver, fingerprintResolver, pathResolver)
 					.setResourceTransformers(cachingTransformer, cssLinkTransformer);
-
-			registry.addResourceHandler("/**/*.js")
-					.addResourceLocations(location)
-					.setResourceResolvers(cachingResolver, prefixResolver, pathResolver);
 		}
 	}
 

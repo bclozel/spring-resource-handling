@@ -1,2 +1,5 @@
 resources:
   projectRoot: ${PROJECT_ROOT:}
+
+app:
+  version: de4db33f
