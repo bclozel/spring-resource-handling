@@ -20,6 +20,7 @@ public class GroovyHelperViewResolver extends GroovyMarkupViewResolver implement
 
 		this.groovyTemplateHelpers.put(name, new MethodClosure(helper, "apply"));
 	}
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		setAttributesMap(this.groovyTemplateHelpers);

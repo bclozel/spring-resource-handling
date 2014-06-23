@@ -1,3 +1,7 @@
+modelTypes = {
+    org.codehaus.groovy.runtime.MethodClosure resource
+}
+
 yieldUnescaped '<!doctype html>'
 html {
     head {
@@ -5,9 +9,10 @@ html {
         meta('http-equiv':"X-UA-Compatible", content:"IE=edge")
         meta(name:"viewport", content:"width=device-width")
         title('Spring resource handling')
-        css("/css/main.css")
-        script("var baseUrl = '/prefix';")
-        script('data-curl-run':"/run.js", src:"/lib/curl/src/curl.js", async:"true","")
+        link(href: '/css/main.css', type: 'text/css', rel: 'stylesheet')
+        script("var baseUrl = '/dev';")
+        resource('/run.js')
+        script('data-curl-run': '/run.js', src: '/lib/curl/src/curl.js', async: 'true', "")
     }
     body {
         div(class:'container') {

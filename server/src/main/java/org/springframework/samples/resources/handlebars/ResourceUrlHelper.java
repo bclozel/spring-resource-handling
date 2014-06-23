@@ -2,6 +2,7 @@ package org.springframework.samples.resources.handlebars;
 
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
+
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
 import java.io.IOException;

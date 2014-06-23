@@ -19,6 +19,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.resource.*;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @EnableWebMvc
 @Configuration
@@ -30,8 +33,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("${resources.projectRoot:}")
 	private String projectRoot;
 
-    @Value("${app.version:}")
-    private String appVersion;
+	@Value("${app.version:}")
+	private String appVersion;
 
 
 	private String getProjectRootRequired() {
@@ -59,9 +62,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		GroovyHelperViewResolver resolver = new GroovyHelperViewResolver();
 		resolver.setSuffix(".tpl");
 		resolver.setOrder(1);
-		resolver.addTemplateHelper("css",
-				s -> String.format("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">",
-					urlProvider.getForLookupPath((String)s)));
+		resolver.addTemplateHelper("resource",
+				s -> {
+					String url = urlProvider.getForLookupPath((String) s);
+					System.out.printf("url resolved for %s : %s \n", s, url);
+					return url;
+				});
 		return resolver;
 	}
 
@@ -72,6 +78,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		configurer.setResourceLoaderPath("classpath:groovy/");
 		configurer.setAutoIndent(true);
 		configurer.setAutoNewLine(true);
+		configurer.setCacheTemplates(false);
 		return configurer;
 	}
 
@@ -79,32 +86,39 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
 		CachingResourceResolver cachingResolver = new CachingResourceResolver(resourceResolverCache());
-		FingerprintResourceResolver fingerprintResolver = new FingerprintResourceResolver();
 		PathResourceResolver pathResolver = new PathResourceResolver();
+		VersionResourceResolver versionResolver = new VersionResourceResolver();
+		Map<String, VersionStrategy> versionStrategies = new HashMap<>();
 
 		CachingResourceTransformer cachingTransformer = new CachingResourceTransformer(resourceResolverCache());
 		CssLinkResourceTransformer cssLinkTransformer = new CssLinkResourceTransformer();
 
 		if (this.env.acceptsProfiles("development")) {
 
-            VersionResourceResolver versionResolver = new VersionResourceResolver(this.appVersion);
+			versionStrategies.put("/**/*.js", new FixedVersionStrategy("dev"));
+			versionStrategies.put("/**", new ContentBasedVersionStrategy());
+			versionResolver.setVersionStrategyMap(versionStrategies);
+
 			String location = "file:///" + getProjectRootRequired() + "/client/src/";
 			int cachePeriod = 0;
 
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
 					.setCachePeriod(cachePeriod)
-					.setResourceResolvers(versionResolver, fingerprintResolver, pathResolver)
+					.setResourceResolvers(versionResolver, pathResolver)
 					.setResourceTransformers(cssLinkTransformer);
 		}
 		else {
 
-            VersionResourceResolver versionResolver = new VersionResourceResolver("dev");
+			versionStrategies.put("/**/*.js", new FixedVersionStrategy(this.appVersion));
+			versionStrategies.put("/**", new ContentBasedVersionStrategy());
+			versionResolver.setVersionStrategyMap(versionStrategies);
+
 			String location = "classpath:static/";
 
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
-					.setResourceResolvers(cachingResolver, versionResolver, fingerprintResolver, pathResolver)
+					.setResourceResolvers(cachingResolver, versionResolver, pathResolver)
 					.setResourceTransformers(cachingTransformer, cssLinkTransformer);
 		}
 	}
