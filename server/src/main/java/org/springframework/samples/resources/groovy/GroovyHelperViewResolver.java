@@ -14,11 +14,11 @@ import org.springframework.web.servlet.view.groovy.GroovyMarkupViewResolver;
  */
 public class GroovyHelperViewResolver extends GroovyMarkupViewResolver implements InitializingBean {
 
-	private Map<String, MethodClosure> groovyTemplateHelpers = new HashMap<>();
+	private Map<String, Function> groovyTemplateHelpers = new HashMap<>();
 
 	public void addTemplateHelper(String name, Function helper) {
 
-		this.groovyTemplateHelpers.put(name, new MethodClosure(helper, "apply"));
+		this.groovyTemplateHelpers.put(name, helper);
 	}
 
 	@Override

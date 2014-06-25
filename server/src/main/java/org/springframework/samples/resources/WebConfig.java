@@ -62,9 +62,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		GroovyHelperViewResolver resolver = new GroovyHelperViewResolver();
 		resolver.setSuffix(".tpl");
 		resolver.setOrder(1);
-		resolver.addTemplateHelper("resource",
-				s -> urlProvider.getForLookupPath((String) s)
-				);
+		resolver.addTemplateHelper("linkTo", s -> urlProvider.getForLookupPath((String) s));
 		return resolver;
 	}
 

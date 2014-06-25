@@ -2,6 +2,7 @@ Spring Resource Handling
 ========================
 
 This application demonstrates new resource handling features in Spring Framework 4.1.
+This projects requires a local install of node+npm (see [nvm](https://github.com/creationix/nvm)).
 
 The easiest way to get started - from the project root - development version:
 
@@ -19,7 +20,6 @@ Interesting parts of the application:
 and a [custom handlebars helper](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/handlebars/ResourceUrlHelper.java) to resolve URLs to static resources
 
 Work in progress:
-* [ ] Fix the Groovy Markup Template example
 * [ ] CDN
 * [ ] HTML5 AppCache MANIFEST
 * [ ] image optimization
