@@ -3,10 +3,14 @@ Spring Resource Handling
 
 This application demonstrates new resource handling features in Spring Framework 4.1.
 
-The easiest way to get started - from the project root:
+The easiest way to get started - from the project root - development version:
 
-    SPRING_PROFILES_ACTIVE=development PROJECT_ROOT=`pwd` ./gradlew :server:bootRun 
+    SPRING_PROFILES_ACTIVE=development PROJECT_ROOT=`pwd` ./gradlew :server:bootRun
+     
+Or the production version (more optimizations):
 
+    ./gradlew :server:bootRun
+    
 Then go to: http://localhost:8080/
 
 Interesting parts of the application:

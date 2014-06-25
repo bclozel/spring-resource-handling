@@ -12,6 +12,7 @@ var paths = {
         files: ['src/css/*.css'],
         root: 'src/css'
     },
+    images: ["src/img/*"],
     destination: './dist'
 };
 
@@ -44,6 +45,11 @@ gulp.task('optimize-and-copy-lib', function() {
         .pipe(uglify())
         .pipe(filter.restore())
         .pipe(gulp.dest(paths.destination + '/lib'));
-})
+});
 
-gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib'], function(){});
+gulp.task('copy-images', function() {
+    return gulp.src(paths.images)
+        .pipe(gulp.dest(paths.destination + '/img'))
+});
+
+gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib', 'copy-images'], function(){});
