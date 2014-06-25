@@ -63,11 +63,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		resolver.setSuffix(".tpl");
 		resolver.setOrder(1);
 		resolver.addTemplateHelper("resource",
-				s -> {
-					String url = urlProvider.getForLookupPath((String) s);
-					System.out.printf("url resolved for %s : %s \n", s, url);
-					return url;
-				});
+				s -> urlProvider.getForLookupPath((String) s)
+				);
 		return resolver;
 	}
 

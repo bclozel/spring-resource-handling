@@ -10,9 +10,7 @@ html {
         meta(name:"viewport", content:"width=device-width")
         title('Spring resource handling')
         link(href: '/css/main.css', type: 'text/css', rel: 'stylesheet')
-        script("var baseUrl = '/dev';")
-        resource('/run.js')
-        script('data-curl-run': '/run.js', src: '/lib/curl/src/curl.js', async: 'true', "")
+        script('data-curl-run': resource('/run.js'), src: '/lib/curl/src/curl.js', async: 'true', "")
     }
     body {
         div(class:'container') {
