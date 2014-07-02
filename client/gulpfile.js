@@ -4,6 +4,8 @@ var gulpFilter = require('gulp-filter'),
     uglify = require('gulp-uglify'),
     bowerSrc = require('gulp-bower-src'),
     cssMinify = require('gulp-minify-css'),
+    imagemin = require('gulp-imagemin'),
+    pngcrush = require('imagemin-pngcrush'),
     gulp = require('gulp');
 
 var paths = {
@@ -49,6 +51,11 @@ gulp.task('optimize-and-copy-lib', function() {
 
 gulp.task('copy-images', function() {
     return gulp.src(paths.images)
+        .pipe(imagemin({
+            progressive: true,
+            svgoPlugins: [{removeViewBox: false}],
+            use: [pngcrush()]
+        }))
         .pipe(gulp.dest(paths.destination + '/img'))
 });
 
