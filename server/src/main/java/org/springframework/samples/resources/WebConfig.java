@@ -46,6 +46,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("index");
 		registry.addViewController("/groovy").setViewName("hello");
+		registry.addViewController("/app").setViewName("app");
 	}
 
 	@Bean
@@ -87,6 +88,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		CachingResourceTransformer cachingTransformer = new CachingResourceTransformer(resourceResolverCache());
 		CssLinkResourceTransformer cssLinkTransformer = new CssLinkResourceTransformer();
+		AppCacheResourceTransformer appCacheTransformer = new AppCacheResourceTransformer();
 
 		if (this.env.acceptsProfiles("development")) {
 
@@ -101,7 +103,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 					.addResourceLocations(location)
 					.setCachePeriod(cachePeriod)
 					.setResourceResolvers(versionResolver, pathResolver)
-					.setResourceTransformers(cssLinkTransformer);
+					.setResourceTransformers(cssLinkTransformer, appCacheTransformer);
 		}
 		else {
 
@@ -114,7 +116,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
 					.setResourceResolvers(cachingResolver, versionResolver, pathResolver)
-					.setResourceTransformers(cachingTransformer, cssLinkTransformer);
+					.setResourceTransformers(cachingTransformer, cssLinkTransformer, appCacheTransformer);
 		}
 	}
 

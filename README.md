@@ -12,16 +12,19 @@ Or the production version (more optimizations):
 
     ./gradlew :server:bootRun
     
-Then go to: http://localhost:8080/
+Then go to:
+
+* http://localhost:8080/ for an example with Handlebars templating
+* http://localhost:8080/groovy for an example with Groovy Template Engine
+* http://localhost:8080/app for an example with an [HTML5 AppCache Manifest](http://www.html5rocks.com/en/tutorials/appcache/beginner/) 
+(you can check this in Chrome with chrome://appcache-internals/ )
 
 Interesting parts of the application:
+
 * [configuring resource handlers with resource resolvers and resource transformers](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/WebConfig.java#L85-L124)
 * [a sample template file using handlebars.java](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/resources/handlebars/index.hbs)
 and a [custom handlebars helper](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/handlebars/ResourceUrlHelper.java) to resolve URLs to static resources
 
 Work in progress:
 * [ ] CDN
-* [ ] HTML5 AppCache MANIFEST
-* [ ] image optimization
-* [ ] CSS sprites
 * [ ] LESS / SASS

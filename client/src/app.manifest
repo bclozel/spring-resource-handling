@@ -1,0 +1,14 @@
+CACHE MANIFEST
+
+# this is a comment
+CACHE:
+lib/curl/src/curl.js
+run.js
+
+NETWORK:
+*
+
+CACHE:
+css/main.css
+img/spring-logo.png
+https://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700
