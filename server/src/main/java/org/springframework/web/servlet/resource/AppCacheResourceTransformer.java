@@ -35,7 +35,27 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * A {@link ResourceTransformer} implementation that helps handling resources
+ * within HTML5 AppCache manifests for HTML5 offline applications.
+ *
+ * <p>This transformer:
+ * <ul>
+ *     <li>modifies links to match the public URL paths that should be exposed to clients, using
+ *     configured {@code ResourceResolver} strategies
+ *     <li>appends a comment in the manifest, containing a Hash (e.g. "# Hash: 9de0f09ed7caf84e885f1f0f11c7e326"),
+ *     thus changing the content of the manifest in order to trigger an appcache reload in the browser.
+ * </ul>
+ *
+ * All files that have the ".manifest" file extension, or the extension given in the constructor, will be transformed
+ * by this class.
+ *
+ * This hash is computed using the content of the appcache manifest and the content of the linked resources; so
+ * changing a resource linked in the manifest or the manifest itself should invalidate browser cache.
+ *
  * @author Brian Clozel
+ * @see <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/offline.html#offline">HTML5 offline
+ * applications spec</a>
+ * @since 4.1
  */
 public class AppCacheResourceTransformer implements ResourceTransformer {
 
@@ -49,11 +69,17 @@ public class AppCacheResourceTransformer implements ResourceTransformer {
 
 	private final String fileExtension;
 
-
+	/**
+	 * Create an AppCacheResourceTransformer that transforms file with extension ".manifest"
+	 */
 	public AppCacheResourceTransformer() {
 		this("manifest");
 	}
 
+	/**
+	 * Create an AppCacheResourceTransformer that transforms files with the extension
+	 * given as a parameter.
+	 */
 	public AppCacheResourceTransformer(String fileExtension) {
 		this.fileExtension = fileExtension;
 
@@ -119,8 +145,14 @@ public class AppCacheResourceTransformer implements ResourceTransformer {
 
 	private static interface SectionTransformer {
 
-		public String transform(String line, HashBuilder builder,
-				Resource resource, ResourceTransformerChain transformerChain) throws IOException;
+		/**
+		 * Transforms a line in a section of the manifest
+		 *
+		 * The actual transformation depends on the chose transformation strategy
+		 * for the current manifest section (CACHE, NETWORK, FALLBACK, etc).
+		 */
+		String transform(String line, HashBuilder builder, Resource resource,
+				ResourceTransformerChain transformerChain) throws IOException;
 	}
 
 	private static class NoOpSection implements SectionTransformer {

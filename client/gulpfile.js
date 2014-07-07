@@ -14,6 +14,7 @@ var paths = {
         files: ['src/css/*.css'],
         root: 'src/css'
     },
+    assets: ["src/cache.manifest"],
     images: ["src/img/*"],
     destination: './dist'
 };
@@ -22,7 +23,7 @@ var paths = {
 gulp.task('optimize-and-copy-css', function() {
 
     return gulp.src(paths.css.files)
-        .pipe(cssMinify({root : paths.css.root}))
+        .pipe(cssMinify({root : paths.css.root, noRebase: true}))
         .pipe(gulp.dest(paths.destination + '/css'));
 });
 
@@ -59,4 +60,9 @@ gulp.task('copy-images', function() {
         .pipe(gulp.dest(paths.destination + '/img'))
 });
 
-gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib', 'copy-images'], function(){});
+gulp.task('copy-assets', function() {
+    return gulp.src(paths.assets)
+        .pipe(gulp.dest(paths.destination))
+});
+
+gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib', 'copy-images', 'copy-assets'], function(){});
