@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.samples.resources.groovy.GroovyHelperViewResolver;
+import org.springframework.samples.resources.handlebars.ProfileHelper;
 import org.springframework.samples.resources.handlebars.ResourceUrlHelper;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -47,6 +48,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addViewController("/").setViewName("index");
 		registry.addViewController("/groovy").setViewName("hello");
 		registry.addViewController("/app").setViewName("app");
+		registry.addViewController("/less").setViewName("less");
 	}
 
 	@Bean
@@ -54,6 +56,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		HandlebarsViewResolver resolver = new HandlebarsViewResolver();
 		resolver.setPrefix("classpath:/handlebars/");
 		resolver.registerHelper("src", new ResourceUrlHelper(urlProvider));
+		resolver.registerHelper(ProfileHelper.NAME, new ProfileHelper(this.env.getActiveProfiles()));
 		resolver.setCache(!this.env.acceptsProfiles("development"));
 		return resolver;
 	}

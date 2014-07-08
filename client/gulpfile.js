@@ -6,6 +6,7 @@ var gulpFilter = require('gulp-filter'),
     cssMinify = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin'),
     pngcrush = require('imagemin-pngcrush'),
+    less = require('gulp-less'),
     gulp = require('gulp');
 
 var paths = {
@@ -14,6 +15,7 @@ var paths = {
         files: ['src/css/*.css'],
         root: 'src/css'
     },
+    less: ['src/less/*'],
     assets: ["src/cache.manifest"],
     images: ["src/img/*"],
     destination: './dist'
@@ -65,4 +67,12 @@ gulp.task('copy-assets', function() {
         .pipe(gulp.dest(paths.destination))
 });
 
-gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib', 'copy-images', 'copy-assets'], function(){});
+gulp.task('less', function () {
+    return gulp.src(paths.less)
+        .pipe(less())
+        .pipe(cssMinify({noRebase: true}))
+        .pipe(gulp.dest(paths.destination + '/css'));
+});
+
+gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib',
+    'copy-images', 'less', 'copy-assets'], function(){});
