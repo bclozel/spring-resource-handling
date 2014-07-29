@@ -31,7 +31,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private Environment env;
 
-	@Value("${resources.projectRoot:}")
+	@Value("${resources.projectroot:}")
 	private String projectRoot;
 
 	@Value("${app.version:}")
@@ -96,8 +96,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		if (this.env.acceptsProfiles("development")) {
 
 			versionStrategies.put("/**/*.js", new FixedVersionStrategy("dev"));
-			versionStrategies.put("/**", new ContentBasedVersionStrategy());
-			versionResolver.setVersionStrategyMap(versionStrategies);
+			versionStrategies.put("/**", new ContentVersionStrategy());
+			versionResolver.setStrategyMap(versionStrategies);
 
 			String location = "file:///" + getProjectRootRequired() + "/client/src/";
 			int cachePeriod = 0;
@@ -111,8 +111,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		else {
 
 			versionStrategies.put("/**/*.js", new FixedVersionStrategy(this.appVersion));
-			versionStrategies.put("/**", new ContentBasedVersionStrategy());
-			versionResolver.setVersionStrategyMap(versionStrategies);
+			versionStrategies.put("/**", new ContentVersionStrategy());
+			versionResolver.setStrategyMap(versionStrategies);
 
 			String location = "classpath:static/";
 

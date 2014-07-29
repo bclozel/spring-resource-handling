@@ -24,8 +24,11 @@
     <div class="jumbotron">
         <h1 id="greeting">{insert greeting here}</h1>
     </div>
-    <h2>In dev mode <a href="/less/style.less">a LESS stylesheet is used</a> (see HTML source of this page)</h2>
-    <h2>In production mode <a href="/css/style.css">a transpiled version of that stylesheet is used</a> (see HTML source of this page)</h2>
+	{{#hasProfile "development"}}
+        <h2>In dev mode <a href="/less/style.less">a LESS stylesheet is used</a> (see HTML source of this page)</h2>
+	{{else}}
+        <h2>In production mode <a href="{{src "/css/style.css"}}">a transpiled version of that stylesheet is used</a> (see HTML source of this page)</h2>
+	{{/hasProfile}}
     <div id="logo"></div>
 </div>
 </body>

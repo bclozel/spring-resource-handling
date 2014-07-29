@@ -6,7 +6,7 @@ This projects requires a local install of node+npm (see [nvm](https://github.com
 
 The easiest way to get started - from the project root - development version:
 
-    SPRING_PROFILES_ACTIVE=development PROJECT_ROOT=`pwd` ./gradlew :server:bootRun
+    SPRING_PROFILES_ACTIVE=development RESOURCES_PROJECTROOT=`pwd` ./gradlew :server:bootRun
      
 Or the production version (more optimizations):
 
