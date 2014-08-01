@@ -84,48 +84,28 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-		CachingResourceResolver cachingResolver = new CachingResourceResolver(resourceResolverCache());
-		PathResourceResolver pathResolver = new PathResourceResolver();
-		VersionResourceResolver versionResolver = new VersionResourceResolver();
-		Map<String, VersionStrategy> versionStrategies = new HashMap<>();
-
-		CachingResourceTransformer cachingTransformer = new CachingResourceTransformer(resourceResolverCache());
-		CssLinkResourceTransformer cssLinkTransformer = new CssLinkResourceTransformer();
 		AppCacheResourceTransformer appCacheTransformer = new AppCacheResourceTransformer();
 
 		if (this.env.acceptsProfiles("development")) {
-
-			versionStrategies.put("/**/*.js", new FixedVersionStrategy("dev"));
-			versionStrategies.put("/**", new ContentVersionStrategy());
-			versionResolver.setStrategyMap(versionStrategies);
-
 			String location = "file:///" + getProjectRootRequired() + "/client/src/";
-			int cachePeriod = 0;
 
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
-					.setCachePeriod(cachePeriod)
-					.setResourceResolvers(versionResolver, pathResolver)
-					.setResourceTransformers(cssLinkTransformer, appCacheTransformer);
+					.setCachePeriod(0)
+					.enableDevMode()
+					.addVersion("dev", "/**/*.js")
+					.addVersionHash("/**")
+					.addTransformer(appCacheTransformer);
 		}
 		else {
-
-			versionStrategies.put("/**/*.js", new FixedVersionStrategy(this.appVersion));
-			versionStrategies.put("/**", new ContentVersionStrategy());
-			versionResolver.setStrategyMap(versionStrategies);
-
 			String location = "classpath:static/";
 
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
-					.setResourceResolvers(cachingResolver, versionResolver, pathResolver)
-					.setResourceTransformers(cachingTransformer, cssLinkTransformer, appCacheTransformer);
+					.addVersion(this.appVersion, "/**/*.js")
+					.addVersionHash("/**")
+					.addTransformer(appCacheTransformer);
 		}
-	}
-
-	@Bean
-	public Cache resourceResolverCache() {
-		return new ConcurrentMapCache("resource-resolver-cache", false);
 	}
 
 }
