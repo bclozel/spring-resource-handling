@@ -4,6 +4,7 @@ var gulpFilter = require('gulp-filter'),
     uglify = require('gulp-uglify'),
     bowerSrc = require('gulp-bower-src'),
     cssMinify = require('gulp-minify-css'),
+    sourcemaps = require('gulp-sourcemaps'),
     imagemin = require('gulp-imagemin'),
     pngcrush = require('imagemin-pngcrush'),
     less = require('gulp-less'),
@@ -37,7 +38,9 @@ gulp.task('optimize-and-copy-js', function() {
         appRoot: "./src"
     };
     return cram(paths.run, options).into('run.js')
-        .pipe(uglify())
+        .pipe(sourcemaps.init())
+            .pipe(uglify())
+        .pipe(sourcemaps.write("./"))
         .pipe(gulp.dest(paths.destination));
 });
 
