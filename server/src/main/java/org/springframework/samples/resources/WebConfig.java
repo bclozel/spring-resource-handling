@@ -92,19 +92,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
 					.setCachePeriod(0)
-					.enableDevMode()
-					.addVersion("dev", "/**/*.js")
-					.addVersionHash("/**")
-					.addTransformer(appCacheTransformer);
+					.resourceChain(false)
+						.addResolver(new VersionResourceResolver()
+								.addFixedVersionStrategy("dev","/**/*.js")
+								.addContentVersionStrategy("/**"))
+						.addTransformer(appCacheTransformer);
 		}
 		else {
 			String location = "classpath:static/";
 
 			registry.addResourceHandler("/**")
 					.addResourceLocations(location)
-					.addVersion(this.appVersion, "/**/*.js")
-					.addVersionHash("/**")
-					.addTransformer(appCacheTransformer);
+					.resourceChain(true)
+						.addResolver(new VersionResourceResolver()
+							.addFixedVersionStrategy(this.appVersion,"/**/*.js")
+							.addContentVersionStrategy("/**"))
+						.addTransformer(appCacheTransformer);
 		}
 	}
 
