@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.*;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 
 
@@ -44,6 +45,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addViewController("/groovy").setViewName("hello");
 		registry.addViewController("/app").setViewName("app");
 		registry.addViewController("/less").setViewName("less");
+		registry.addViewController("/jsp").setViewName("hellojsp");
 	}
 
 	@Bean
@@ -53,6 +55,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		resolver.registerHelper("src", new ResourceUrlHelper(urlProvider));
 		resolver.registerHelper(ProfileHelper.NAME, new ProfileHelper(this.env.getActiveProfiles()));
 		resolver.setCache(!this.env.acceptsProfiles("development"));
+		resolver.setFailOnMissingFile(false);
 		return resolver;
 	}
 
@@ -60,7 +63,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public GroovyHelperViewResolver groovyViewResolver(ResourceUrlProvider urlProvider) {
 		GroovyHelperViewResolver resolver = new GroovyHelperViewResolver();
 		resolver.setSuffix(".tpl");
-		resolver.setOrder(1);
 		resolver.addTemplateHelper("linkTo", s -> urlProvider.getForLookupPath((String) s));
 		return resolver;
 	}
@@ -74,6 +76,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		configurer.setAutoNewLine(true);
 		configurer.setCacheTemplates(false);
 		return configurer;
+	}
+
+	@Bean
+	public InternalResourceViewResolver defaultViewResolver() {
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setPrefix("/WEB-INF/jsp/");
+		resolver.setSuffix(".jsp");
+		return resolver;
+	}
+
+	@Bean
+	public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
+		ResourceUrlEncodingFilter filter = new ResourceUrlEncodingFilter();
+
+		return filter;
 	}
 
 	@Override

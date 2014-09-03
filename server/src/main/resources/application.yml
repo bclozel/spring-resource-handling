@@ -1,5 +1,9 @@
 resources:
   projectroot:
+spring:
+  view:
+    prefix: /WEB-INF/jsp/
+    suffix: .jsp
 
 app:
   version: de4db33f
