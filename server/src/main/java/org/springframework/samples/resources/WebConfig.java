@@ -4,8 +4,6 @@ import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
-import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -19,9 +17,6 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.*;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 @EnableWebMvc
@@ -84,31 +79,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
+		boolean devMode = this.env.acceptsProfiles("development");
+
+		String location = devMode ? "file:///" + getProjectRootRequired() + "/client/src/" : "classpath:static/";
+		Integer cachePeriod = devMode ? 0 : null;
+		boolean useResourceCache = !devMode;
+		String version = devMode ? "dev" : this.appVersion;
+
 		AppCacheResourceTransformer appCacheTransformer = new AppCacheResourceTransformer();
+		VersionResourceResolver versionResolver = new VersionResourceResolver()
+				.addFixedVersionStrategy(version, "/**/*.js")
+				.addContentVersionStrategy("/**");
 
-		if (this.env.acceptsProfiles("development")) {
-			String location = "file:///" + getProjectRootRequired() + "/client/src/";
-
-			registry.addResourceHandler("/**")
-					.addResourceLocations(location)
-					.setCachePeriod(0)
-					.resourceChain(false)
-						.addResolver(new VersionResourceResolver()
-								.addFixedVersionStrategy("dev","/**/*.js")
-								.addContentVersionStrategy("/**"))
-						.addTransformer(appCacheTransformer);
-		}
-		else {
-			String location = "classpath:static/";
-
-			registry.addResourceHandler("/**")
-					.addResourceLocations(location)
-					.resourceChain(true)
-						.addResolver(new VersionResourceResolver()
-							.addFixedVersionStrategy(this.appVersion,"/**/*.js")
-							.addContentVersionStrategy("/**"))
-						.addTransformer(appCacheTransformer);
-		}
+		registry.addResourceHandler("/**")
+				.addResourceLocations(location)
+				.setCachePeriod(cachePeriod)
+				.resourceChain(useResourceCache)
+					.addResolver(versionResolver)
+					.addTransformer(appCacheTransformer);
 	}
 
 }
