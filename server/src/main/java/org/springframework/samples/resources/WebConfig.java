@@ -86,7 +86,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		boolean useResourceCache = !devMode;
 		String version = devMode ? "dev" : this.appVersion;
 
-		AppCacheResourceTransformer appCacheTransformer = new AppCacheResourceTransformer();
+		AppCacheManifestTransformer appCacheTransformer = new AppCacheManifestTransformer();
 		VersionResourceResolver versionResolver = new VersionResourceResolver()
 				.addFixedVersionStrategy(version, "/**/*.js")
 				.addContentVersionStrategy("/**");
