@@ -20,9 +20,10 @@ Then go to:
 (you can check this in Chrome with chrome://appcache-internals/ )
 * http://localhost:8080/less for an example with a LESS stylesheet; this page uses less files and the LESS JS transpiler
 in development mode, and a transpiled version in production
+* http://localhost:8080/jsp for a JSP example
 
 Interesting parts of the application:
 
-* [configuring resource handlers with resource resolvers and resource transformers](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/WebConfig.java#L85-L124)
+* [configuring resource handlers with resource resolvers and resource transformers](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/WebConfig.java#L96-L117)
 * [a sample template file using handlebars.java](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/resources/handlebars/index.hbs)
 and a [custom handlebars helper](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/handlebars/ResourceUrlHelper.java) to resolve URLs to static resources
