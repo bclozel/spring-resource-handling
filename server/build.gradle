@@ -1,9 +1,12 @@
 buildscript {
     ext {
-        springBootVersion = '1.1.6.RELEASE'
+        springBootVersion = '1.2.0.M1'
     }
     repositories {
         mavenCentral()
+		maven{
+			url 'http://repo.spring.io/libs-snapshot'
+		}
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -34,7 +37,7 @@ targetCompatibility = javaVersion
 
 war {
 	baseName = 'spring-resource-handling'
-	version =  '0.0.1'
+	version =  '0.1.0.BUILD-SNAPSHOT'
 }
 
 configurations {

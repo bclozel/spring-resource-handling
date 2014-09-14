@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.springframework.samples</groupId>
+	<artifactId>spring-resource-handling-client</artifactId>
+	<version>0.1.0.BUILD-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Spring Resource Handling Client module</name>
+
+	<parent>
+		<groupId>org.springframework.samples</groupId>
+		<artifactId>spring-resource-handling</artifactId>
+		<version>0.1.0.BUILD-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>0.0.16</version>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals><goal>install-node-and-npm</goal></goals>
+						<configuration>
+							<nodeVersion>v0.10.31</nodeVersion>
+							<npmVersion>1.4.23</npmVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals><goal>npm</goal></goals>
+					</execution>
+					<execution>
+						<id>npm build</id>
+						<goals><goal>npm</goal></goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/dist</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

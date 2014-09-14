@@ -11,3 +11,8 @@ out
 # Gradle
 .gradle
 build
+
+# Maven
+target
+dist
+node
