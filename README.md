@@ -2,6 +2,9 @@ Spring Resource Handling
 ========================
 
 This application demonstrates new resource handling features in Spring Framework 4.1.
+It was originally developed for the talk [Resource Handling in Spring MVC 4.1](https://2014.event.springone2gx.com/schedule/sessions/resource_handling_in_spring_mvc_4_1.html) talk at SpringOne2GX 2014.
+
+
 This projects requires a local install of node+npm (see [nvm](https://github.com/creationix/nvm)).
 
 The easiest way to get started - from the project root - development version:
