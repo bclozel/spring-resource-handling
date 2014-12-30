@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.2.0.M1'
+        springBootVersion = '1.2.0.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -27,9 +27,9 @@ repositories {
 
 ext {
     javaVersion = '1.8';
-    springVersion = '4.1.1.BUILD-SNAPSHOT'
-    tomcatVersion = '8.0.9'
-    groovyVersion = '2.3.6'
+    springVersion = '4.1.3.RELEASE'
+    tomcatVersion = '8.0.15'
+    groovyVersion = '2.3.9'
 }
 
 sourceCompatibility = javaVersion
