@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.2.0.RELEASE'
+        springBootVersion = '1.2.1.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -47,10 +47,8 @@ configurations {
 dependencies {
     compile project(':client')
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-	compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compile("org.springframework:spring-webmvc:${springVersion}")
 
-	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}")
 	providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
 	compile("javax.servlet:jstl")
     compile("com.github.jknack:handlebars-springmvc:1.3.0")
