@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.2.1.RELEASE'
+        springBootVersion = '1.2.2.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -27,9 +27,9 @@ repositories {
 
 ext {
     javaVersion = '1.8';
-    springVersion = '4.1.3.RELEASE'
-    tomcatVersion = '8.0.15'
-    groovyVersion = '2.3.9'
+    springVersion = '4.1.5.RELEASE'
+    tomcatVersion = '8.0.20'
+    groovyVersion = '2.4.1'
 }
 
 sourceCompatibility = javaVersion
@@ -47,13 +47,13 @@ configurations {
 dependencies {
     compile project(':client')
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compile("org.springframework:spring-webmvc:${springVersion}")
+    //compile("org.springframework:spring-webmvc:${springVersion}")
 
-	providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
+	compile("org.apache.tomcat.embed:tomcat-embed-jasper")
 	compile("javax.servlet:jstl")
-    compile("com.github.jknack:handlebars-springmvc:1.3.0")
+    compile("com.github.jknack:handlebars-springmvc:2.0.0")
     compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-    testCompile("org.testng:testng:6.8.8")
+    testCompile("org.testng:testng:6.8.21")
 }
