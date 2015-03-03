@@ -1,23 +1,12 @@
 {
-    "name": "spring-resource-handling",
-    "version": "0.0.1",
-    "dependencies": {
-        "curl": "0.8.10",
-        "jquery": "2.0.3",
-        "bootstrap": "3.1.1",
-        "less": "1.7.3"
-    },
-    "devDependencies": {
-    },
-    "overrides": {
-        "jquery": {
-            "ignore": ["build/**", "speed/**", "src/**", "test/**"]
-        },
-        "bootstrap": {
-            "ignore": ["fonts/**", "grunt/**", "js/**", "less/**", "test-infa/**"]
-        },
-        "less": {
-            "ignore": ["gradle/**", "gradle*", "dist/less-rhino*", "dist/lessc-rhino*", "dist/less-1.[0-6]*"]
-        }
-    }
+  "name": "spring-resource-handling",
+  "version": "0.0.1",
+  "dependencies": {
+    "systemjs": "systemjs/systemjs#~0.14.1",
+    "jquery": "~2.1.3",
+    "bootstrap": "~3.3.2",
+    "less": "~2.4.0",
+    "es6-module-loader": "ModuleLoader/es6-module-loader#~0.14.0"
+  },
+  "devDependencies": {}
 }

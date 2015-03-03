@@ -1,17 +1,15 @@
 
-var gulpFilter = require('gulp-filter'),
-    cram = require('gulp-cram'),
-    uglify = require('gulp-uglify'),
-    bowerSrc = require('gulp-bower-src'),
+var path = require('path'),
     cssMinify = require('gulp-minify-css'),
-    sourcemaps = require('gulp-sourcemaps'),
     imagemin = require('gulp-imagemin'),
     pngcrush = require('imagemin-pngcrush'),
     less = require('gulp-less'),
-    gulp = require('gulp');
+    gulp = require('gulp'),
+    Builder = require('systemjs-builder');
 
 var paths = {
-    run: 'src/run.js',
+    baseUrl: 'file:' + process.cwd() + '/src/',
+    bowerLibs: ['src/lib/**', '!src/lib/*/test/*'],
     css: {
         files: ['src/css/*.css'],
         root: 'src/css'
@@ -31,27 +29,26 @@ gulp.task('optimize-and-copy-css', function() {
 });
 
 // Optimize application JavaScript files and copy to "dist" folder
-gulp.task('optimize-and-copy-js', function() {
-
-    var options = {
-        includes: ['curl/loader/legacy'],
-        appRoot: "./src"
-    };
-    return cram(paths.run, options).into('run.js')
-        .pipe(sourcemaps.init())
-            .pipe(uglify())
-        .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest(paths.destination));
+gulp.task('optimize-and-copy-js', function(cb) {
+    var builder = new Builder({
+        baseURL: paths.baseUrl,
+        map: {
+            jquery: paths.baseUrl + 'lib/jquery/dist/jquery.min'
+        }
+    });
+    builder.build('app/app', paths.destination + '/app/app.js', { minify: true, sourceMaps: true })
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            cb(err);
+        });
 });
 
 // Optimize bower-managed JavaScript dependencies and copy to "dist" folder
-gulp.task('optimize-and-copy-lib', function() {
+gulp.task('copy-bower-lib', function() {
 
-    var filter = gulpFilter(["**/*.js", "!**/*.min.js"]);
-    return bowerSrc()
-        .pipe(filter)
-        .pipe(uglify())
-        .pipe(filter.restore())
+    return gulp.src(paths.bowerLibs)
         .pipe(gulp.dest(paths.destination + '/lib'));
 });
 
@@ -77,5 +74,5 @@ gulp.task('less', function () {
         .pipe(gulp.dest(paths.destination + '/css'));
 });
 
-gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'optimize-and-copy-lib',
+gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'copy-bower-lib',
     'copy-images', 'less', 'copy-assets'], function(){});

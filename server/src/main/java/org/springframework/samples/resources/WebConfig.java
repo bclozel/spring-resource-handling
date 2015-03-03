@@ -96,6 +96,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 				.addFixedVersionStrategy(version, "/**/*.js")
 				.addContentVersionStrategy("/**");
 
+		if(devMode) {
+			versionResolver = versionResolver.addFixedVersionStrategy(version, "/**/*.map");
+		}
+
 		registry.addResourceHandler("/**")
 				.addResourceLocations(location)
 				.setCachePeriod(cachePeriod)

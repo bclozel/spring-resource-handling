@@ -6,7 +6,12 @@ html {
         meta(name:"viewport", content:"width=device-width")
         title('Spring resource handling')
         link(href: linkTo.apply('/css/main.css'), type: 'text/css', rel: 'stylesheet')
-        script('data-curl-run': linkTo.apply('/run.js'), src: linkTo.apply('/lib/curl/src/curl.js'), async: 'true', "")
+        script(src: linkTo.apply('/lib/es6-module-loader/dist/es6-module-loader.js'), "")
+        script(src: linkTo.apply('/lib/systemjs/dist/system.js'), "")
+        script("""
+        	System.map['jquery'] = '/lib/jquery/dist/jquery.min';
+        	System.import('app/app');
+        """)
     }
     body {
         div(class:'container') {

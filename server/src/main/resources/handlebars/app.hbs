@@ -9,7 +9,12 @@
 
     <link rel="stylesheet" type="text/css" href="{{src "/css/main.css"}}">
 
-    <script data-curl-run="{{src "/run.js"}}" src="{{src "/lib/curl/src/curl.js"}}" async></script>
+   <script src="{{src "/lib/es6-module-loader/dist/es6-module-loader.js"}}"></script>
+   <script src="{{src "/lib/systemjs/dist/system.js"}}"></script>
+   <script>
+	System.map['jquery'] = '/lib/jquery/dist/jquery.min';
+	   System.import('app/app');
+   </script>
 
 </head>
 <body>
