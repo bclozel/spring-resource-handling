@@ -1,5 +1,6 @@
 package org.springframework.samples.resources;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -66,6 +67,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		resolver.registerHelper(ProfileHelper.NAME, new ProfileHelper(this.env.getActiveProfiles()));
 		resolver.setCache(!this.env.acceptsProfiles("development"));
 		resolver.setFailOnMissingFile(false);
+		resolver.setAttributesMap(Collections.singletonMap("applicationVersion", getApplicationVersion()));
 		return resolver;
 	}
 
@@ -73,6 +75,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public void registerGroovyTemplateHelpers() {
 		Map<String, Function> groovyTemplateHelpers = new HashMap<>();
 		groovyTemplateHelpers.put("linkTo", s -> this.urlProvider.getForLookupPath((String) s));
+		groovyTemplateHelpers.put("appVersion", s -> getApplicationVersion());
 		this.groovyMarkupViewResolver.setAttributesMap(groovyTemplateHelpers);
 	}
 
@@ -89,7 +92,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		String location = devMode ? "file:///" + getProjectRootRequired() + "/client/src/" : "classpath:static/";
 		Integer cachePeriod = devMode ? 0 : null;
 		boolean useResourceCache = !devMode;
-		String version = devMode ? "dev" : this.appVersion;
+		String version = getApplicationVersion();
 
 		AppCacheManifestTransformer appCacheTransformer = new AppCacheManifestTransformer();
 		VersionResourceResolver versionResolver = new VersionResourceResolver()
@@ -102,6 +105,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 				.resourceChain(useResourceCache)
 					.addResolver(versionResolver)
 					.addTransformer(appCacheTransformer);
+	}
+
+	protected String getApplicationVersion() {
+		return this.env.acceptsProfiles("development") ? "dev" : this.appVersion;
 	}
 
 }

@@ -11,6 +11,7 @@
     <script src="{{src "/lib/system.js"}}"></script>
     <script src="{{src "/config.js"}}"></script>
     <script>
+        System.config({baseURL: "/{{applicationVersion}}"});
         System.import('app/app');
     </script>
 </head>
