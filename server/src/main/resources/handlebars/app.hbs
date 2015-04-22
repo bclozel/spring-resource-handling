@@ -8,13 +8,11 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" type="text/css" href="{{src "/css/main.css"}}">
-
-   <script src="{{src "/lib/es6-module-loader/dist/es6-module-loader.js"}}"></script>
-   <script src="{{src "/lib/systemjs/dist/system.js"}}"></script>
-   <script>
-	System.map['jquery'] = '/lib/jquery/dist/jquery.min';
-	   System.import('app/app');
-   </script>
+    <script src="{{src "/lib/system.js"}}"></script>
+    <script src="{{src "/config.js"}}"></script>
+    <script>
+        System.import('app/app');
+    </script>
 
 </head>
 <body>

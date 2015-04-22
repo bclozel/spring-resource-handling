@@ -12,10 +12,9 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" type="text/css" href="<spring:url value="/css/main.css"/>">
-    <script src="<spring:url value="/lib/es6-module-loader/dist/es6-module-loader.js"/>"></script>
-    <script src="<spring:url value="/lib/systemjs/dist/system.js"/>"></script>
+    <script src="<spring:url value="/lib/system.js"/>"></script>
+    <script src="<spring:url value="/config.js"/>"></script>
     <script>
-        System.map['jquery'] = '/lib/jquery/dist/jquery.min';
         System.import('app/app');
     </script>
 

@@ -93,12 +93,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		AppCacheManifestTransformer appCacheTransformer = new AppCacheManifestTransformer();
 		VersionResourceResolver versionResolver = new VersionResourceResolver()
-				.addFixedVersionStrategy(version, "/**/*.js")
+				.addFixedVersionStrategy(version, "/**/*.js", "/**/*.map")
 				.addContentVersionStrategy("/**");
-
-		if(devMode) {
-			versionResolver = versionResolver.addFixedVersionStrategy(version, "/**/*.map");
-		}
 
 		registry.addResourceHandler("/**")
 				.addResourceLocations(location)
