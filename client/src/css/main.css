@@ -1,5 +1,4 @@
-@import url("../lib/github/twbs/bootstrap@3.3.4/css/bootstrap.css");
-
+@import "../lib/github/twbs/bootstrap@3.3.4/css/bootstrap.css";
 #logo {
     width: 100%;
     height: 200px;

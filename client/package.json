@@ -3,12 +3,12 @@
   "version": "0.0.1",
   "description": "Spring Resources Handling sample",
   "dependencies": {
-    "jspm": "^0.15.2",
     "gulp": "^3.8.11",
     "gulp-less": "^3.0.3",
-    "gulp-minify-css": "^1.1.0",
+    "gulp-minify-css": "^1.1.1",
     "gulp-util": "^3.0.4",
-    "systemjs-builder": "^0.10.4"
+    "jspm": "^0.15.6",
+    "systemjs-builder": "^0.10.6"
   },
   "scripts": {
     "prepublish": "jspm install",
@@ -28,8 +28,8 @@
       "less": "github:aaike/jspm-less-plugin@^0.0.5"
     },
     "devDependencies": {
-      "traceur": "github:jmcriffey/bower-traceur@0.0.87",
-      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.87"
+      "traceur": "github:jmcriffey/bower-traceur@0.0.88",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
     }
   }
 }

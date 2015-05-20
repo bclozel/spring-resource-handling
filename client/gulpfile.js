@@ -9,8 +9,7 @@ var paths = {
     baseUrl: 'file:' + process.cwd() + '/src/',
     bowerLibs: ['src/lib/**', '!src/lib/*/test/*'],
     css: {
-        files: ['src/css/*.css'],
-        root: 'src/css'
+        files: ['src/css/*.css']
     },
     less: ['src/less/*'],
     assets: ["src/cache.manifest"],
@@ -21,7 +20,7 @@ var paths = {
 // Optimize application CSS files and copy to "dist" folder
 gulp.task('optimize-and-copy-css', function() {
     return gulp.src(paths.css.files)
-        .pipe(cssMinify({root : paths.css.root, noRebase: true}))
+        .pipe(cssMinify())
         .pipe(gulp.dest(paths.destination + '/css'));
 });
 
