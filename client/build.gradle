@@ -1,6 +1,16 @@
-import org.apache.tools.ant.taskdefs.condition.Os
+plugins {
+    id "com.moowork.node" version "0.10"
+}
 
 apply plugin: 'java'
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '0.12.5'
+    npmVersion = '2.11.2'
+}
+
+def githubAuthToken = "$System.env.JSPM_GITHUB_AUTH_TOKEN"
 
 jar {
     from 'dist'
@@ -12,37 +22,12 @@ jar {
     includeEmptyDirs = false
 }
 
-task npmInstall(type:Exec) {
-
-    logging.captureStandardOutput LogLevel.INFO     // be Gradle-like, reduce noisy logging
-    logging.captureStandardError LogLevel.LIFECYCLE // but do show downloads in the log
-
-    inputs.files "package.json", "bower.json"
-    outputs.files "node_modules", "src/lib"
-
-    if(Os.isFamily(Os.FAMILY_WINDOWS)) {
-        commandLine 'cmd', '/c', 'npm', 'install'
-    }
-    else {
-        commandLine 'npm', 'install'
-    }
+task jspm_config(type: NpmTask, dependsOn: npm_install) {
+    args = ['run', 'jspm', 'config registries.github.auth', githubAuthToken]
 }
 
-task npmBuild(type:Exec, dependsOn: npmInstall) {
-
-    logging.captureStandardOutput LogLevel.INFO
-    logging.captureStandardError LogLevel.INFO
-
-    inputs.dir "src"
-    inputs.file "gulpfile.js"
-    outputs.dir "dist"
-
-    if(Os.isFamily(Os.FAMILY_WINDOWS)) {
-        commandLine 'cmd', '/c', 'npm', 'run', 'build'
-    }
-    else {
-        commandLine 'npm', 'run', 'build'
-    }
+task npm_build(type: NpmTask, dependsOn: jspm_config) {
+    args = ['run', 'build']
 }
 
-jar.dependsOn npmBuild
+jar.dependsOn npm_build

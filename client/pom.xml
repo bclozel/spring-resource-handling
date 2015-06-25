@@ -28,8 +28,8 @@
 						<id>install node and npm</id>
 						<goals><goal>install-node-and-npm</goal></goals>
 						<configuration>
-							<nodeVersion>v0.10.38</nodeVersion>
-							<npmVersion>1.4.28</npmVersion>
+							<nodeVersion>v0.12.5</nodeVersion>
+							<npmVersion>2.11.2</npmVersion>
 						</configuration>
 					</execution>
 					<execution>
