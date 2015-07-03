@@ -8,6 +8,7 @@ apply plugin: 'com.moowork.node'
 node {
     version = '0.12.5'
     npmVersion = '2.11.2'
+    download = true
 }
 
 def githubAuthToken = "$System.env.JSPM_GITHUB_AUTH_TOKEN"
@@ -22,12 +23,22 @@ jar {
     includeEmptyDirs = false
 }
 
+// Avoid Github rate limiting on CI instances
+// See https://github.com/jspm/jspm-cli/wiki/Registries#travis-ci
 task jspm_config(type: NpmTask, dependsOn: npm_install) {
-    args = ['run', 'jspm', 'config registries.github.auth', githubAuthToken]
+    args = ['run', 'jspm-config', '--', "$githubAuthToken"]
 }
 
-task npm_build(type: NpmTask, dependsOn: jspm_config) {
+task jspm_install(type: NpmTask, dependsOn: npm_install) {
+    args = ['run', 'jspm-install']
+}
+
+task npm_build(type: NpmTask, dependsOn: jspm_install) {
     args = ['run', 'build']
+}
+
+if (githubAuthToken != "null") {
+    jspm_install.setDependsOn([jspm_config])
 }
 
 jar.dependsOn npm_build
