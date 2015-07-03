@@ -11,8 +11,9 @@
     "systemjs-builder": "^0.10.6"
   },
   "scripts": {
-    "prepublish": "jspm install",
-    "build": "gulp build"
+    "build": "gulp build",
+    "jspm-install": "jspm install",
+    "jspm-config": "jspm config registries.github.auth"
   },
   "engines": {
     "node": ">=0.10.0"
