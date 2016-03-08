@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Spring resource handling</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <script src="{{#src}}/lib/system.js{{/src}}"></script>
+    <script src="{{#src}}/config.js{{/src}}"></script>
+	{{#isDevMode}}
+        <link rel="stylesheet/less" type="text/css" href="{{#src}}/less/style.less{{/src}}" />
+        <script>
+            System.import('less');
+        </script>
+    {{/isDevMode}}
+	{{^isDevMode}}
+        <link rel="stylesheet" type="text/css" href="{{#src}}/css/style.css{{/src}}">
+	{{/isDevMode}}
+	<script>
+        System.config({baseURL: "/{{applicationVersion}}"});
+		System.import('app/app');
+	</script>
+
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1 id="greeting">{insert greeting here}</h1>
+    </div>
+    {{#isDevMode}}
+        <h2>In dev mode <a href="{{#src}}/less/style.less{{/src}}">a LESS stylesheet is used</a> (see HTML source of this page)</h2>
+    {{/isDevMode}}
+    {{^isDevMode}}
+        <h2>In production mode <a href="{{#src}}/css/style.css{{/src}}">a transpiled version of that stylesheet is used</a> (see HTML source of this page)</h2>
+    {{/isDevMode}}
+    <div id="logo"></div>
+</div>
+</body>
+</html>

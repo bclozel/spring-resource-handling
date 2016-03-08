@@ -7,7 +7,8 @@ var path = require('path'),
 
 var paths = {
     baseUrl: 'file:' + process.cwd() + '/src/',
-    bowerLibs: ['src/lib/**', '!src/lib/*/test/*'],
+    config: ['src/config.js'],
+    jspmLibs: ['src/lib/**', '!src/lib/*/test/*'],
     css: {
         files: ['src/css/*.css']
     },
@@ -40,8 +41,13 @@ gulp.task('optimize-and-copy-js', function(cb) {
 
 // Copy jspm-managed JavaScript dependencies to "dist" folder
 gulp.task('copy-lib', function() {
-    return gulp.src(paths.bowerLibs)
+    return gulp.src(paths.jspmLibs)
         .pipe(gulp.dest(paths.destination + '/lib'));
+});
+
+gulp.task('copy-config', function() {
+    return gulp.src(paths.config)
+        .pipe(gulp.dest(paths.destination));
 });
 
 gulp.task('copy-images', function() {
@@ -62,4 +68,4 @@ gulp.task('less', function () {
 });
 
 gulp.task('build', ['optimize-and-copy-css', 'optimize-and-copy-js', 'copy-lib',
-    'copy-images', 'less', 'copy-assets'], function(){});
+    'copy-config', 'copy-images', 'less', 'copy-assets'], function(){});
