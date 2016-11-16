@@ -3,7 +3,8 @@ System.config({
   "transpiler": "traceur",
   "paths": {
     "*": "*.js",
-    "github:*": "lib/github/*.js"
+    "github:*": "lib/github/*.js",
+    "npm:*": "lib/npm/*.js"
   }
 });
 

@@ -22,14 +22,14 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.29</version>
+				<version>1.2</version>
 				<executions>
 					<execution>
 						<id>install node and npm</id>
 						<goals><goal>install-node-and-npm</goal></goals>
 						<configuration>
-							<nodeVersion>v4.3.2</nodeVersion>
-							<npmVersion>2.14.12</npmVersion>
+							<nodeVersion>v6.9.1</nodeVersion>
+							<npmVersion>3.10.8</npmVersion>
 						</configuration>
 					</execution>
 					<execution>
@@ -54,7 +54,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
+				<version>3.0.1</version>
 				<executions>
 					<execution>
 						<id>copy-resources</id>

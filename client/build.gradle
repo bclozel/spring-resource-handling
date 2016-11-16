@@ -1,13 +1,11 @@
 plugins {
-    id "com.moowork.node" version "0.11"
+    id "com.moowork.node" version "0.13"
 }
 
 apply plugin: 'java'
-apply plugin: 'com.moowork.node'
 
 node {
-    version = '4.3.2'
-    npmVersion = '2.14.12'
+    version = '6.9.1'
     download = true
 }
 
