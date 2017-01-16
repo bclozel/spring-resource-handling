@@ -30,6 +30,6 @@ in development mode, and a transpiled version in production
 
 Interesting parts of the application:
 
-* [configuring resource handlers with resource resolvers and resource transformers](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/resources/application-production.java)
+* [configuring resource handlers with resource resolvers and resource transformers](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/resources/application-production.properties)
 * [a sample template file using JMustache](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/resources/mustache/index.html)
 and a [custom Mustache lambdas](https://github.com/bclozel/spring-resource-handling/blob/master/server/src/main/java/org/springframework/samples/resources/support/MustacheViewResolverCustomizer.java) to resolve URLs to static resources
